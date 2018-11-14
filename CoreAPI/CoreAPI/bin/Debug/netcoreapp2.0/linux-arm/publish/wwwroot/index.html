@@ -1,0 +1,146 @@
+﻿<html>
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <style>
+            .vranger 
+            {
+                margin-top: 70px;
+                transform: rotate(270deg);
+                -moz-transform: rotate(270deg);
+            }
+            .slider-col
+            {
+                padding-left: 50px;
+                width: 50px;
+                text-align: center;
+            }       
+        </style>
+        <script src="js/jquery-3.3.1.min.js" type="text/javascript"></script>
+        <script src="js/popper.min.js" type="text/javascript"></script>
+        <script src="js/bootstrap.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var c_r = 0;
+            var c_g = 0;
+            var c_b = 0;
+            var changing = false;
+            const CMD_VALUES = 70;
+
+            function setChannel(channel, value)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "api/channels",
+                    headers: { 'Content-Type': 'application/json' },
+                    data: JSON.stringify({ Channel: channel, Value: value }),
+                    dataType: "json",
+                    success: function(responseData, status, xhr) { },
+                    error: function(request, status, error) { },
+                });
+            }
+
+            function sendCommand(command)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "api/command",
+                    headers: { 'Content-Type': 'application/json' },
+                    data: JSON.stringify({ Channel: command, Value: 0 }),
+                    dataType: "json",
+                    success: function(res, status, xhr) 
+                    {
+                        if (command == CMD_VALUES) {
+                            if (res.valid) {
+                                $('#r').val(res.red);
+                                $('#g').val(res.green);
+                                $('#b').val(res.blue);                                
+                            }
+                        }
+                    },
+                    error: function(request, status, error) { 
+                        alert(JSON.stringify(error));
+                    },
+                });
+            }
+
+            function mouseDown() {
+                changing = true;
+                console.log('mouseDown()');
+            }
+
+            function mouseUp() {
+                changing = false;
+                console.log('mouseUp()');
+            }
+
+            $(function() { 
+                setInterval(function() {
+                    var r = $("#r").val();
+                    var g = $("#g").val();
+                    var b = $("#b").val();
+                    var w = $("#w").val(); 
+                    $("#rv").text(r);
+                    $("#gv").text(g);
+                    $("#bv").text(b);
+                    $("#wv").text(w);
+                    if (w > 0) {
+                        if (c_g != w) {
+                            c_g = w;
+                            c_b = w;
+                            c_r = w;
+                            setChannel(5, c_r);
+                            setChannel(6, c_g);
+                            setChannel(3, c_b);
+                        }
+                    } else {
+                        if (c_r != r) {
+                            c_r = r;
+                            setChannel(5, c_r);
+                        }
+                        if (c_g != g) {
+                            c_g = g;
+                            setChannel(6, c_g);
+                        }
+                        if (c_b != b) {
+                            c_b = b;
+                            setChannel(3, c_b);
+                        }                    
+                    }
+                }, 50);
+                setInterval(function() {
+                    if (!changing) sendCommand(CMD_VALUES);
+                }, 500);                
+            });
+        </script>
+    </head>
+    <body style="background-color: #000;">
+        <div class="container">
+            <div class="row" style="height: 160px;">
+                <div class="col-md-1" class="slider-col">
+                    <input id="r" type="range" min="0" max="255" class="vranger" onmousedown="mouseDown()" onmouseup="mouseUp()"/>
+                </div>
+                <div class="col-md-1 class="slider-col"">
+                    <input id="g" type="range" min="0" max="255" class="vranger" onmousedown="mouseDown()" onmouseup="mouseUp()"/>
+                </div>
+                <div class="col-md-1" class="slider-col">
+                    <input id="b" type="range" min="0" max="255" class="vranger" onmousedown="mouseDown()" onmouseup="mouseUp()"/>
+                </div>
+                <div class="col-md-1" class="slider-col">
+                    <input id="w" type="range" min="0" max="255" class="vranger" value="0" onmousedown="mouseDown()" onmouseup="mouseUp()"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1" style="color:#fff"><label class="slider-col" id="rv">0</label></div>
+                <div class="col-md-1" style="color:#fff"><label class="slider-col" id="gv">0</label></div>
+                <div class="col-md-1" style="color:#fff"><label class="slider-col" id="bv">0</label></div>
+                <div class="col-md-1" style="color:#fff"><label class="slider-col" id="wv">0</label></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <input class="form-control" type="button" value="CMD_VALUES" onclick="sendCommand(CMD_VALUES);" />
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

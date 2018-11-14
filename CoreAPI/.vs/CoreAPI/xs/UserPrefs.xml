@@ -1,0 +1,19 @@
+﻿<Properties StartupConfiguration="{902ED76E-FDE9-4CF2-9F27-80432BF4B3BD}|Default">
+  <MonoDevelop.Ide.ItemProperties.CoreHardware FirstBuild="True" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="CoreHardware/ValueCommand.cs">
+    <Files>
+      <File FileName="CoreAPI/Program.cs" Line="1" Column="1" />
+      <File FileName="CoreAPI/Startup.cs" Line="11" Column="1" />
+      <File FileName="CoreAPI/Controllers/ChannelsController.cs" Line="14" Column="41" />
+      <File FileName="CoreAPI/build.sh" Line="3" Column="90" />
+      <File FileName="CoreHardware/ValueCommand.cs" Line="4" Column="33" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.CoreAPI PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

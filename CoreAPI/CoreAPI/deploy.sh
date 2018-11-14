@@ -1,0 +1,1 @@
+﻿scp -r bin/Debug/netcoreapp2.0/linux-arm/publish/* tesla@192.168.32.185:/var/dotnet/homecore
